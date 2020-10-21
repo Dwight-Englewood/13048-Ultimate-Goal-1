@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.Movement;
-import org.firstinspires.ftc.teamcode.Hardware.Variables;
 
 import com.qualcomm.robotcore.util.Range;
 
@@ -731,6 +730,3 @@ public class NewAutonMethods {
     }
 
     }
-
- */
-}

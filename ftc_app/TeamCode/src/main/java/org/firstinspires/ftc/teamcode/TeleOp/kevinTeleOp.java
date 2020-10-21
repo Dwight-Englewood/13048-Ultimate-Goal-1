@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.DeuxBoot;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Kevin Tele-Op",group="TeleOp")
+//@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Kevin Tele-Op",group="TeleOp")
 public class kevinTeleOp extends OpMode {
     DeuxBoot robot = new DeuxBoot();
     double speed;
