@@ -65,7 +65,7 @@ public class NewAutonMethods {
         intakeL = this.map.get(DcMotor.class, "intakeL");
         intakeR = this.map.get(DcMotor.class, "intakeR");
 
-   //     BR.setDirection(DcMotorSimple.Direction.FORWARD);
+        BR.setDirection(DcMotorSimple.Direction.FORWARD);
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
         FR.setDirection(DcMotorSimple.Direction.FORWARD);
