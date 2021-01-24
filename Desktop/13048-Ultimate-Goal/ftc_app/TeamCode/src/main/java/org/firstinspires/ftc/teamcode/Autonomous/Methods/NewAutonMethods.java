@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Methods;
-
-import android.graphics.Point;
 import com.qualcomm.hardware.bosch.BNO055IMU;
-
 import com.qualcomm.robotcore.hardware.*;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,14 +11,12 @@ import org.firstinspires.ftc.teamcode.Hardware.Movement;
 
 import com.qualcomm.robotcore.util.Range;
 
-import java.util.ArrayList;
-
 public class NewAutonMethods {
     public DcMotor
-            BL, BR, FL, FR, lift, intakeL, intakeR, tape;
+            BL, BR, FL, FR, wobbleMotor, intake/*, outtake*/;
 
-    public static Servo
-            closer, hinger, foundationLeft, foundationRight, leftPurp, rightPurp, leftBlue, rightBlue, spinner, grabber, extend;
+    public Servo
+            wobbleServo;
 
     HardwareMap map;
     Telemetry tele;
@@ -38,6 +33,8 @@ public class NewAutonMethods {
 
     public final double TkpVal = 0.02, TkiVal = 0.00002, TkdVal = 0.0006;
     public double TlastError, Terror = 0, TerrorI = 0, TerrorD = 0;
+
+    public double wobbleMotorRadius = 30.5;
 
     public static BNO055IMU gyro;
 
@@ -60,44 +57,31 @@ public class NewAutonMethods {
         BL = this.map.get(DcMotor.class, "BL");
         FL = this.map.get(DcMotor.class, "FL");
         FR = this.map.get(DcMotor.class, "FR");
+        BR.setDirection(DcMotorSimple.Direction.REVERSE);
+        BL.setDirection(DcMotorSimple.Direction.FORWARD);
+        FL.setDirection(DcMotorSimple.Direction.FORWARD);
+        FR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        lift = this.map.get(DcMotor.class, "lift");
-        intakeL = this.map.get(DcMotor.class, "intakeL");
-        intakeR = this.map.get(DcMotor.class, "intakeR");
+        wobbleMotor = this.map.get(DcMotor.class, "wobbleMotor");
+        wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        wobbleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        BR.setDirection(DcMotorSimple.Direction.FORWARD);
-        BL.setDirection(DcMotorSimple.Direction.REVERSE);
-        FL.setDirection(DcMotorSimple.Direction.REVERSE);
-        FR.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake = this.map.get(DcMotor.class, "intake");
+        intake.setDirection((DcMotorSimple.Direction.REVERSE));
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeL.setDirection((DcMotorSimple.Direction.REVERSE));
-        intakeR.setDirection((DcMotorSimple.Direction.REVERSE));
+        /*
 
-        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtake = this.map.get(DcMotor.class, "outtake");
+        outtake.setDirection((DcMotorSimple.Direction.REVERSE));
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+         */
 
-        foundationLeft = this.map.get(Servo.class, "fleft");
-        foundationRight = this.map.get(Servo.class, "fright");
-
-        leftBlue = this.map.get(Servo.class, "leftBlue");
-        leftPurp = this.map.get(Servo.class, "leftPurp");
-        rightBlue = this.map.get(Servo.class, "rightBlue");
-        rightPurp = this.map.get(Servo.class, "rightPurp");
-
-        hinger = this.map.get(Servo.class, "hinge");
-        spinner = this.map.get(Servo.class, "spinner");
-        grabber = this.map.get(Servo.class, "grabber");
-        extend = this.map.get(Servo.class, "extend");
+        wobbleServo = this.map.get(Servo.class, "wobbleServo");
 
         this.changeRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.newCloseServoAuton();
+        this.closeWobbleServo();
     }
 
     public void initGyro() {
@@ -341,14 +325,8 @@ public class NewAutonMethods {
         this.command++;
     }
 
-    public void liftReset() {
-        this.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.command++;
-    }
-
     public void intakeReset() {
-        this.intakeL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.intakeR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.command++;
     }
 
@@ -356,127 +334,29 @@ public class NewAutonMethods {
         this.runtime.reset();
     }
 
-    public void closeHingeAuton() {
-        this.hinger.setPosition(0);
+    public void openWobbleServo() {
+        this.wobbleServo.setPosition(1);
     }
 
-    public void openHingeAuton() {
-        this.hinger.setPosition(0.75);
+    public void closeWobbleServo() {
+        this.wobbleServo.setPosition(0);
     }
 
-    public void openClampAuton() {
-        this.closer.setPosition(1);
+    public void raiseWobble(){
+        this.wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.wobbleMotor.setTargetPosition(cmDistance(Math.PI * wobbleMotorRadius / 4));
+        this.wobbleMotor.setPower(0.5);
+        this.wobbleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void closeClampAuton() {
-        this.closer.setPosition(0);
+    public void lowerWobble(){
+        this.wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.wobbleMotor.setTargetPosition(cmDistance(Math.PI * wobbleMotorRadius / 4));
+        this.wobbleMotor.setPower(-0.5);
+        this.wobbleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void openServoAuton() {
-        this.foundationLeft.setPosition(0.57);
-        this.foundationRight.setPosition(0.32);
-    }
-
-    public void closeServoAuton() {
-        this.foundationLeft.setPosition(0); //0.55 //right
-        this.foundationRight.setPosition(1); //0.35 //left
-    }
-
-    public void newCloseServoAuton() {
-        this.foundationLeft.setPosition(0);
-        this.foundationRight.setPosition(1);
-    }
-
-    public void newOpenServoAuton() {
-        this.foundationLeft.setPosition(0.4);
-        this.foundationRight.setPosition(0.6);
-    }
-
-    public void liftRightClaws() {
-        this.leftBlue.setPosition(0);
-        this.leftPurp.setPosition(1);
-    }
-
-    public void lowerOpenRightClaws() {
-        this.leftBlue.setPosition(1);
-        this.leftPurp.setPosition(0);
-    }
-
-    public void lowerCloseRightClaws() {
-        this.leftBlue.setPosition(1);
-        this.leftPurp.setPosition(1);
-    }
-
-    public void closeRightClaws() {
-        this.leftPurp.setPosition(1);
-    }
-
-    public void openRightClaws() {
-        this.leftPurp.setPosition(0);
-    }
-
-    public void liftLeftClaws() {
-        this.rightBlue.setPosition(0);
-        this.rightPurp.setPosition(1);
-    }
-
-    public void lowerOpenLeftClaws() {
-        this.rightBlue.setPosition(1);
-        this.rightPurp.setPosition(0);
-    }
-
-    public void lowerCloseLeftClaws() {
-        this.rightBlue.setPosition(0);
-        this.rightPurp.setPosition(1);
-    }
-
-    public void closeLeftClaws() {
-        this.rightBlue.setPosition(0);
-    }
-
-    public void openLeftClaws() {
-        this.rightBlue.setPosition(0);
-    }
-
-    public void initClaws() {
-        this.rightBlue.setPosition(1);
-        this.rightPurp.setPosition(1);
-        this.leftBlue.setPosition(0);
-        this.leftPurp.setPosition(0);
-    }
-
-    public void lowerClosedClaws() {
-        this.leftPurp.setPosition(0.08);
-    }
-
-    public void extendExtend() {
-        this.extend.setPosition(0);
-    }
-
-    public void detractExtend() {
-        this.extend.setPosition(1);
-    }
-
-    public void lowerLift(double height) {
-        this.lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.lift.setTargetPosition(cmDistance(height));
-        this.lift.setPower(-0.8);
-        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public void raiseLiftDeux(double height) {
-        this.lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.lift.setTargetPosition(cmDistance(height));
-        this.lift.setPower(0.5);
-        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public void lowerLiftDeux(double height) {
-        this.lift.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.lift.setTargetPosition(cmDistance(height));
-        this.lift.setPower(0.5);
-        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+    public void wobbleMotorReset(){ this.wobbleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
 
     public boolean adjustHeading(int targetHeading) {
         double headingError;
@@ -701,23 +581,6 @@ public class NewAutonMethods {
 
     public boolean tinyPowerValue() {
         return Math.abs(FL.getPower()) < 0.25 && Math.abs(FR.getPower()) < 0.25 && Math.abs(BL.getPower()) < 0.25 && Math.abs(BR.getPower()) < 0.25;
-    }
-
-    public void tapeExtend(int target, double power) {
-        this.tape.setTargetPosition(target);
-        this.tape.setPower(power);
-        this.tape.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        if ((Math.abs(this.tape.getCurrentPosition() - this.tape.getTargetPosition()) < 25)) {
-            this.tape.setPower(0);
-            if (this.tape.getCurrentPosition() != 0) {
-                this.tape.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                tele.addLine("Reset Not Successful");
-                tele.update();
-            } else {
-                this.command++;
-            }
-        }
     }
 
     private int cmDistance(double distance) {

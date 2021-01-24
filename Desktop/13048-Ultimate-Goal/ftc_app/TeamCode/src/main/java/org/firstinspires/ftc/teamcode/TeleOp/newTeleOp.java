@@ -9,27 +9,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Hardware.DeuxBoot;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="New Tele-Op",group="TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Tele-Op",group="TeleOp")
 public class newTeleOp extends OpMode {
     DeuxBoot robot = new DeuxBoot();
     double speed;
     boolean buttonAheld = false;
     boolean grabberClosed = true;
-    boolean buttonBheld = false;
-    boolean hingedClosed = true;
-    boolean buttonXheld = false;
-    boolean spinnerClosed = false;
-    boolean buttonYheld = false;
-    boolean foundationClosed = false;
 
     @Override
     public void init() {
         robot.initNew(hardwareMap);
-
-        robot.leftBlue.setPosition(0);
-        robot.leftPurp.setPosition(1);
-        robot.rightBlue.setPosition(1);
-        robot.rightPurp.setPosition(0);
 
     }
 
@@ -54,9 +43,7 @@ public class newTeleOp extends OpMode {
                 gamepad1.right_trigger,
                 speed);
 
-        robot.lift.setPower(gamepad2.right_stick_y);
-        robot.intakeL.setPower(gamepad2.left_stick_y*0.50);
-        robot.intakeR.setPower(-gamepad2.left_stick_y*0.50);
+        robot.wobbleMotor.setPower(gamepad2.left_stick_x);
 
         if (gamepad1.b) {
             speed = 0.25;
@@ -67,84 +54,27 @@ public class newTeleOp extends OpMode {
         }
         telemetry.addData("Speed", speed);
 
-        if (gamepad2.dpad_right) {
-            robot.extend.setPosition(0);
-        } else if (gamepad2.dpad_left){
-            robot.extend.setPosition(1);
-        }
-
-        if (gamepad2.y && !buttonYheld) {
-            buttonYheld = true;
-            if (foundationClosed) {
-                foundationClosed = false;
-                robot.foundationLeft.setPosition(1);
-                robot.foundationRight.setPosition(0);
-            } else {
-                foundationClosed = true;
-                robot.foundationLeft.setPosition(0);
-                robot.foundationRight.setPosition(1);
-            }
-        }
-
-        if (!gamepad2.y) {
-            buttonYheld = false;
-        }
-
-
         if (gamepad2.a && !buttonAheld) {
             buttonAheld = true;
             if (grabberClosed) {
                 grabberClosed = false;
-                robot.grabber.setPosition(1);
+                robot.wobbleServo.setPosition(1);
             } else {
                 grabberClosed = true;
-                robot.grabber.setPosition(0);
+                robot.wobbleServo.setPosition(0);
             }
         }
 
         if (!gamepad2.a) {
             buttonAheld = false;
         }
-
-        if (gamepad2.b && !buttonBheld) {
-            buttonBheld = true;
-            if (hingedClosed) {
-                hingedClosed = false;
-                robot.hinge.setPosition(1);
-                robot.spinner.setPosition(1);
-            } else {
-                hingedClosed = true;
-                robot.hinge.setPosition(0.1);
-                robot.spinner.setPosition(0);
-            }
-        }
-
-        if (!gamepad2.b) {
-            buttonBheld = false;
-        }
-
-        if (gamepad2.x && !buttonXheld) {
-            buttonXheld = true;
-            if (spinnerClosed) {
-                spinnerClosed = false;
-                robot.spinner.setPosition(0);
-            } else {
-                spinnerClosed = true;
-                robot.spinner.setPosition(0.35);
-            }
-        }
-
-        if (!gamepad2.x) {
-            buttonXheld = false;
-        }
     }
+        /*
+         * Code to run ONCE after the driver hits STOP
+         */
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-
-    @Override
-    public void stop () {
-    }
+        @Override
+        public void stop () {
+        }
 }
 

@@ -33,10 +33,12 @@ public class kevinTeleOp extends OpMode {
             }
         }.start();
 
-        robot.leftBlue.setPosition(0);
+        /*robot.leftBlue.setPosition(0);
         robot.leftPurp.setPosition(1);
         robot.rightBlue.setPosition(1);
         robot.rightPurp.setPosition(0);
+
+         */
     }
 
     @Override

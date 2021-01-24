@@ -49,18 +49,10 @@ public class TestMet extends OpMode {
     public void loop() {
         switch (robot.command) {
             case 0:
-             //   robot.setHeadingTarget(Movement.FORWARD, 30, 90);
+                robot.setHeadingTarget(Movement.FORWARD, 100);
                 break;
 
             case 1:
-             //   robot.targetHeadingWrapper();
-                break;
-
-            case 2:
-                robot.setHeadingTarget(Movement.BACKWARD, 30);
-                break;
-
-            case 3:
                 robot.targetHeadingWrapper(0, 30);
                 break;
         }

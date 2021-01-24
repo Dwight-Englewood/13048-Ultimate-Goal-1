@@ -8,14 +8,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-public class
-DeuxBoot{
+public class DeuxBoot{
     public DcMotor
-            BL, BR, FL, FR, lift, intakeL, intakeR;
+            BL, BR, FL, FR, wobbleMotor, intake/*, outtake*/;
 
     public Servo
-            closer, hinger, foundationLeft, foundationRight,
-            leftBlue, leftPurp, rightBlue, rightPurp, hinge, spinner, grabber, extend;
+            wobbleServo;
+
 
     public float curHeading;
 
@@ -43,30 +42,23 @@ DeuxBoot{
         FL.setDirection(DcMotorSimple.Direction.FORWARD);
         FR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        lift = this.map.get(DcMotor.class, "lift");
-        lift.setDirection(DcMotorSimple.Direction.FORWARD);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wobbleMotor = this.map.get(DcMotor.class, "wobbleMotor");
+        wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        wobbleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        intakeL = this.map.get(DcMotor.class, "intakeL");
-        intakeL.setDirection((DcMotorSimple.Direction.REVERSE));
-        intakeL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake = this.map.get(DcMotor.class, "intake");
+        intake.setDirection((DcMotorSimple.Direction.REVERSE));
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        intakeR = this.map.get(DcMotor.class, "intakeR");
-        intakeR.setDirection((DcMotorSimple.Direction.REVERSE));
-        intakeR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        /*
 
-        foundationLeft = this.map.get(Servo.class, "fleft");
-        foundationRight = this.map.get(Servo.class, "fright");
+        outtake = this.map.get(DcMotor.class, "outtake");
+        outtake.setDirection((DcMotorSimple.Direction.REVERSE));
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftBlue = this.map.get(Servo.class, "leftBlue");
-        leftPurp = this.map.get(Servo.class, "leftPurp");
-        rightBlue = this.map.get(Servo.class, "rightBlue");
-        rightPurp = this.map.get(Servo.class, "rightPurp");
+         */
 
-        hinge = this.map.get(Servo.class, "hinge");
-        spinner = this.map.get(Servo.class, "spinner");
-        grabber = this.map.get(Servo.class, "grabber");
-        extend = this.map.get(Servo.class, "extend");
+        wobbleServo = this.map.get(Servo.class, "wobbleServo");
 
         this.changeRunMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
 
-public class SkystoneDetect {
+public class ZoneDetect {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
@@ -37,7 +37,7 @@ public class SkystoneDetect {
     public boolean blue = false;
     public boolean red = false;
 
-    public SkystoneDetect() {}
+    public ZoneDetect() {}
 
     public void init(HardwareMap hwMap, Telemetry telemetry) {
         this.initVuforia(hwMap);
@@ -52,7 +52,7 @@ public class SkystoneDetect {
     }
 
     public void detectionLoopBlue(){
-            SkystoneDetect.Spot returnedloc = this.getSkystonePosBlue();
+            ZoneDetect.Spot returnedloc = this.getSkystonePosBlue();
             switch (returnedloc) {
                 case LEFT:
                     left++;
@@ -73,7 +73,7 @@ public class SkystoneDetect {
     }
 
     public void detectionLoopRed(){
-        SkystoneDetect.Spot returnedloc = this.getSkystonePosRed();
+        ZoneDetect.Spot returnedloc = this.getSkystonePosRed();
         switch (returnedloc) {
             case LEFT:
                 left++;
