@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/13048-Ultimate-Goal-1.iml" filepath="$PROJECT_DIR$/.idea/modules/13048-Ultimate-Goal-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/13048-Ultimate-Goal-1.FtcRobotController.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/13048-Ultimate-Goal-1.FtcRobotController.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/13048-Ultimate-Goal-1.TeamCode.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/13048-Ultimate-Goal-1.TeamCode.iml" />
     </modules>
   </component>
 </project>
