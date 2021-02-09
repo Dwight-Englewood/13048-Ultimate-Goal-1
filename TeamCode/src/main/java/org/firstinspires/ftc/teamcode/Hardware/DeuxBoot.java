@@ -37,10 +37,10 @@ public class DeuxBoot{
         BL = this.map.get(DcMotor.class, "BL");
         FL = this.map.get(DcMotor.class, "FL");
         FR = this.map.get(DcMotor.class, "FR");
-        BR.setDirection(DcMotorSimple.Direction.REVERSE);
-        BL.setDirection(DcMotorSimple.Direction.FORWARD);
-        FL.setDirection(DcMotorSimple.Direction.FORWARD);
-        FR.setDirection(DcMotorSimple.Direction.REVERSE);
+        BR.setDirection(DcMotorSimple.Direction.FORWARD);
+        BL.setDirection(DcMotorSimple.Direction.REVERSE);
+        FL.setDirection(DcMotorSimple.Direction.REVERSE);
+        FR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         wobbleMotor = this.map.get(DcMotor.class, "wobbleMotor");
         wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -171,7 +171,7 @@ public class DeuxBoot{
         BR.setPower(leftStick_x * - returnHeading());
     }
 
-    public void tankDrive(double leftStickX, double leftStickY, double rightStickX, double leftTrigger, double rightTrigger) {
+    public void tankDrive(double leftStickX, double leftStickY, double rightStickX, double leftTrigger, double rightTrigger, double speed) {
         if (leftTrigger > .3) {
             drive(Movement.LEFTTURN, leftTrigger);
             return;
@@ -181,10 +181,10 @@ public class DeuxBoot{
             return;
         }
         if (gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 45) {
-            FL.setPower(leftStickY - leftStickX - rightStickX);
-            FR.setPower(leftStickY + leftStickX + rightStickX);
-            BL.setPower(leftStickY + leftStickX - rightStickX);
-            BR.setPower(leftStickY - leftStickX + rightStickX);
+            FL.setPower((leftStickY - leftStickX - rightStickX) * speed);
+            FR.setPower((leftStickY + leftStickX + rightStickX) * speed);
+            BL.setPower((leftStickY + leftStickX - rightStickX) * speed);
+            BR.setPower((leftStickY - leftStickX + rightStickX) * speed);
         }
     }
 
