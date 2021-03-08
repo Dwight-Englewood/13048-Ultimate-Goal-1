@@ -20,6 +20,13 @@ public class newTeleOp extends OpMode {
     public void init() {
         robot.initNew(hardwareMap);
 
+        new Thread()  {
+            public void run() {
+                robot.initGyro();
+                telemetry.addData("Gyro Initialized", robot.isGyroInit());
+            }
+        }.start();
+
     }
 
     @Override

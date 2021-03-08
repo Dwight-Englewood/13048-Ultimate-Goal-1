@@ -40,7 +40,7 @@ public class DeuxBoot{
         BR.setDirection(DcMotorSimple.Direction.FORWARD);
         BL.setDirection(DcMotorSimple.Direction.REVERSE);
         FL.setDirection(DcMotorSimple.Direction.REVERSE);
-        FR.setDirection(DcMotorSimple.Direction.FORWARD);
+        FR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         wobbleMotor = this.map.get(DcMotor.class, "wobbleMotor");
         wobbleMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -173,19 +173,19 @@ public class DeuxBoot{
 
     public void tankDrive(double leftStickX, double leftStickY, double rightStickX, double leftTrigger, double rightTrigger, double speed) {
         if (leftTrigger > .3) {
-            drive(Movement.LEFTTURN, leftTrigger);
+            drive(Movement.LEFTSTRAFE, leftTrigger * speed);
             return;
         }
         if (rightTrigger > .3) {
-            drive(Movement.RIGHTTURN, rightTrigger);
+            drive(Movement.RIGHTSTRAFE, rightTrigger * speed);
             return;
         }
-        if (gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 45) {
+    //    if (gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 45) {
             FL.setPower((leftStickY - leftStickX - rightStickX) * speed);
             FR.setPower((leftStickY + leftStickX + rightStickX) * speed);
             BL.setPower((leftStickY + leftStickX - rightStickX) * speed);
             BR.setPower((leftStickY - leftStickX + rightStickX) * speed);
-        }
+   //     }
     }
 
 
