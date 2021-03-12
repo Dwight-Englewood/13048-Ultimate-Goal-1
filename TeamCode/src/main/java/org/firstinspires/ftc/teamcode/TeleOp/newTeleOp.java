@@ -51,7 +51,8 @@ public class newTeleOp extends OpMode {
                 gamepad1.right_trigger,
                 speed);
 
-        robot.wobbleMotor.setPower(gamepad2.left_stick_x * 0.5);
+        robot.wobbleMotor.setPower(gamepad2.left_stick_y * 0.5);
+        robot.intake.setPower(gamepad2.right_stick_y);
 
         if (gamepad1.b) {
             speed = 0.25;
@@ -76,6 +77,11 @@ public class newTeleOp extends OpMode {
         if (!gamepad2.a) {
             buttonAheld = false;
         }
+        telemetry.addData("FL Power", robot.FL.getPower());
+        telemetry.addData("FR Current", robot.FR.getPower());
+        telemetry.addData("BL Current", robot.BL.getPower());
+        telemetry.addData("BR Current", robot.BR.getPower());
+        telemetry.update();
     }
         /*
          * Code to run ONCE after the driver hits STOP
