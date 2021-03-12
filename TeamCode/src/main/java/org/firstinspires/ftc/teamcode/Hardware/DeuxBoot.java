@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 public class DeuxBoot{
     public DcMotor
-            BL, BR, FL, FR, wobbleMotor, intake/*, outtake*/;
+            BL, BR, FL, FR, wobbleMotor, intake, outtake;
 
     public Servo
             wobbleServo;
@@ -50,13 +50,9 @@ public class DeuxBoot{
         intake.setDirection((DcMotorSimple.Direction.REVERSE));
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        /*
-
         outtake = this.map.get(DcMotor.class, "outtake");
         outtake.setDirection((DcMotorSimple.Direction.REVERSE));
         outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-         */
 
         wobbleServo = this.map.get(Servo.class, "wobbleServo");
 
