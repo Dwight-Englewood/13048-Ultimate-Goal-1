@@ -56,12 +56,14 @@ public class kevinTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        robot.tankDrive(gamepad1.left_stick_x,
+       /* robot.tankDrive(gamepad1.left_stick_x,
                 gamepad1.left_stick_y,
                 gamepad1.right_stick_x,
                 gamepad1.left_trigger,
                 gamepad1.right_trigger,
                 speed);
+                
+        */
 
 /*        telemetry.addData("FL Power", robot.FL.getPower());
         telemetry.addData("FR Power", robot.FR.getPower());

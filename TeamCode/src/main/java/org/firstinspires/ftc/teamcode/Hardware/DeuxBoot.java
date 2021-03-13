@@ -167,7 +167,7 @@ public class DeuxBoot{
         BR.setPower(leftStick_x * - returnHeading());
     }
 
-    public void tankDrive(double leftStickX, double leftStickY, double rightStickX, double leftTrigger, double rightTrigger, double speed) {
+    public void tankDrive(double leftStickY, double rightStickY, double leftTrigger, double rightTrigger, double speed) {
         if (leftTrigger > .3) {
             drive(Movement.LEFTSTRAFE, leftTrigger * speed);
             return;
@@ -176,12 +176,18 @@ public class DeuxBoot{
             drive(Movement.RIGHTSTRAFE, rightTrigger * speed);
             return;
         }
-    //    if (gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 45) {
+        /*  if (gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle > 45) {
             FL.setPower((leftStickY - leftStickX - rightStickX) * speed);
             FR.setPower((leftStickY + leftStickX + rightStickX) * speed);
             BL.setPower((leftStickY + leftStickX - rightStickX) * speed);
             BR.setPower((leftStickY - leftStickX + rightStickX) * speed);
-   //     }
+        }
+        */
+
+        FL.setPower((leftStickY) * speed);
+        FR.setPower((rightStickY) * speed);
+        BL.setPower((leftStickY) * speed);
+        BR.setPower((rightStickY) * speed);
     }
 
 

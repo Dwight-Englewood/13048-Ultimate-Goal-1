@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Hardware.DeuxBoot;
 public class newTeleOp extends OpMode {
     DeuxBoot robot = new DeuxBoot();
     double speed;
-    boolean buttonAheld = false;
+    boolean buttonXheld = false;
     boolean grabberClosed = true;
 
     @Override
@@ -44,16 +44,23 @@ public class newTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        robot.tankDrive(gamepad1.left_stick_x,
-                gamepad1.left_stick_y,
-                gamepad1.right_stick_x,
+        robot.tankDrive(gamepad1.left_stick_y,
+                gamepad1.right_stick_y,
                 gamepad1.left_trigger,
                 gamepad1.right_trigger,
                 speed);
 
-        robot.wobbleMotor.setPower(gamepad2.left_stick_y * 0.5);
+        robot.wobbleMotor.setPower(gamepad2.left_stick_x * 0.5);
         robot.intake.setPower(gamepad2.right_stick_y);
-        robot.outtake.setPower(gamepad2.right_trigger);
+        robot.outtake.setPower(gamepad2.right_trigger + gamepad2.left_trigger * -1);
+
+        if (gamepad2.x) {
+            // Open wobble servo
+            robot.wobbleServo.setPosition(0);
+        } else if (gamepad2.y) {
+            // Close wobble servo
+            robot.wobbleServo.setPosition(1);
+        }
 
         if (gamepad1.b) {
             speed = 0.25;
@@ -64,24 +71,28 @@ public class newTeleOp extends OpMode {
         }
         telemetry.addData("Speed", speed);
 
-        if (gamepad2.a && !buttonAheld) {
-            buttonAheld = true;
+       /* if (gamepad1.x && !buttonXheld) {
+            buttonXheld = true;
             if (grabberClosed) {
                 grabberClosed = false;
-                robot.wobbleServo.setPosition(1);
+                robot.wobbleServo.setPosition(0);
             } else {
                 grabberClosed = true;
-                robot.wobbleServo.setPosition(0);
+                robot.wobbleServo.setPosition(1);
             }
         }
 
-        if (!gamepad2.a) {
-            buttonAheld = false;
+        if (!gamepad1.x) {
+            buttonXheld = false;
         }
+
+        */
+
         telemetry.addData("FL Power", robot.FL.getPower());
         telemetry.addData("FR Current", robot.FR.getPower());
         telemetry.addData("BL Current", robot.BL.getPower());
         telemetry.addData("BR Current", robot.BR.getPower());
+        telemetry.addData("buttonXIsPressed: ", gamepad1.x);
         telemetry.update();
     }
         /*
